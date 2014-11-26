@@ -1,0 +1,17 @@
+.galleryna {
+	width: 80%;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+
+	.wrapper {
+		overflow: hidden;
+	}
+
+	.item {
+		position: relative;
+		float: left;
+		width: 100%;
+		text-align: center;
+	}
+}
