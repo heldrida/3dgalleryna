@@ -14,9 +14,13 @@
 	$.Galleryna = function (options, element) {
 
 		this.$el = $(element);
+
 		this.defaults = {
-			current: 0
+			current: 0,
+			interval: 1, // seconds
+			autoplay: true
 		};
+
 		this._init(options);
 
 	}
@@ -24,6 +28,8 @@
 	$.Galleryna.prototype = {
 		
 		_init: function (options) {
+
+			var _self = this;
 
 			this.$window = $(window);
 			this.options = $.extend(true, {}, this.defaults, options);
@@ -35,10 +41,43 @@
 			this.itemsTotal = this.$items.length;
 			this.current = this.options.current;
 
-			this._setWidth();
+			// on windows resize, modify the width
+			this._windowResizeEventManager.queue.push(function () {
+				this._setWidth();
+			}.bind(this));
 
-			this._layout();
+			// start window resize listener
+			this._windowResizeEventManager.listen();
 
+			this._setItems();
+
+			// start slideshow
+			this._slide();
+
+		},
+
+		_windowResizeEventManager: {
+			queue: [],
+			// Queue iterator, executes each fn
+			queueCaller: function () {
+
+                var i;
+
+				for(i in this.queue){
+					this.queue[i]();
+				}
+
+			},
+			listen: function(){
+
+				// Call at least once, when init
+				this.queueCaller();
+				
+				// On Window resize listener
+				// When triggered though, the fn call is throttled, limiting the nr of calls
+				$(window).on('resize.galleryna',  this.queueCaller.bind(this));
+
+			}
 		},
 
 		_wrapItems: function () {
@@ -71,30 +110,53 @@
 				});
 		},
 
-		_layout: function () {
+		_setItems: function () {
 
 			// set item positions
-			this.$leftItem = this.$items[this._lastPosition.call(this)];
-			console.log(this.$leftItem);
+			this.$current = this.$items.eq(this.current === this.itemsTotal ? 0 : this.current);
+			this.$leftItem = this.$items.eq(this._prevPosition.call(this));
+			this.$rightItem = this.$items.eq(this._nextPosition.call(this));
+			console.log(this.$rightItem);
 
-			$('.temp-helper-listener').on('click', function(){
+			// set active
+			this.$items.removeClass('active');
+			this.$current.addClass('active');
 
-				$(window).trigger('next.galleryna');
+			// set left
+			this.$leftItem.addClass('left');
 
-			}.bind(this));
+			// set right
+			this.$rightItem.addClass('right');
+
+			// remove left & right from inactive
+			this.$items.not(this.$leftItem).removeClass('left');
+			this.$items.not(this.$rightItem).removeClass('right');
 
 			this._setListener('next');
 			this._setListener('previous');
 
 		},
 
-		_lastPosition: function () {
+		_prevPosition: function () {
+
+			if (this.current >= this.itemsTotal) {
+				this.current = 0;
+			}
+
+			return this.current === 0 ? this.itemsTotal - 1 : this.current - 1;
+
+		},
+
+		_nextPosition: function () {
 
 			if (this.current === this.itemsTotal) {
 				this.current = 0;
 			}
 
-			return (this.itemsTotal - 1) - this.current;
+			console.log('this.current: ' + this.current);
+			console.log(this.current === this.itemsTotal - 1 ? 0 : this.current + 1);
+
+			return this.current === this.itemsTotal - 1 ? 0 : this.current + 1;
 		},
 
 		_setListener: function (listener) {
@@ -113,18 +175,41 @@
 
 		_next: function () {
 
+			console.log('_next()');
+
 			this.current += 1;
 
-			// set item positions
-			this.$leftItem = this.$items[this._lastPosition()];
-			console.log(this.$leftItem);
+			// update items
+			this._setItems();
+
 
 		},
 
 		_previous: function () {
 
-			console.log('previous');
+			console.log('_previous()');
 			
+		},
+
+		_slide: function () {
+			
+			return;
+
+            var _self = this,
+            	milliseconds = this.options.interval * 1000;
+
+            this.slideshow = setTimeout(function() {
+
+            	_self._next();
+
+                if (_self.options.autoplay) {
+
+                    _self._slide();
+
+                }
+
+            }, milliseconds);
+
 		}
 
 	}
