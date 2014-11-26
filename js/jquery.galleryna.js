@@ -25,15 +25,19 @@
 		
 		_init: function (options) {
 
-			this.options = $.extend(true, {}, $.Galleryna.defaults, options);
+			this.$window = $(window);
+			this.options = $.extend(true, {}, this.defaults, options);
 			
 			this._wrapItems();
 
 			this.$wrapper = this.$el.find('.wrapper');
 			this.$items = this.$wrapper.children('div');
 			this.itemsTotal = this.$items.length;
+			this.current = this.options.current;
 
 			this._setWidth();
+
+			this._layout();
 
 		},
 
@@ -65,6 +69,62 @@
 					});
 
 				});
+		},
+
+		_layout: function () {
+
+			// set item positions
+			this.$leftItem = this.$items[this._lastPosition.call(this)];
+			console.log(this.$leftItem);
+
+			$('.temp-helper-listener').on('click', function(){
+
+				$(window).trigger('next.galleryna');
+
+			}.bind(this));
+
+			this._setListener('next');
+			this._setListener('previous');
+
+		},
+
+		_lastPosition: function () {
+
+			if (this.current === this.itemsTotal) {
+				this.current = 0;
+			}
+
+			return (this.itemsTotal - 1) - this.current;
+		},
+
+		_setListener: function (listener) {
+
+			if (listener === "next") {
+
+				this.$window.on('next.galleryna', this._next.bind(this));
+
+			} else if (listener === "previous") {
+
+				this.$window.on('previous.galleryna', this._previous.bind(this));
+
+			}
+
+		},
+
+		_next: function () {
+
+			this.current += 1;
+
+			// set item positions
+			this.$leftItem = this.$items[this._lastPosition()];
+			console.log(this.$leftItem);
+
+		},
+
+		_previous: function () {
+
+			console.log('previous');
+			
 		}
 
 	}
