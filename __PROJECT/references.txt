@@ -1,3 +1,5 @@
+http://tympanus.net/codrops/2012/02/06/3d-gallery-with-css3-and-jquery/
+
 /**
  * jquery.gallery.js
  * http://www.codrops.com
