@@ -5,7 +5,6 @@ A 3d gallery or slideshow, targetting mobile primarily.
 ## How to use
 
 ````
-<!-- start: 3d galleryna -->
 <div id="myGalleryna" class="galleryna">
 	<div>
 		<img src="http://dummyimage.com/500x300/444/fc0" />
@@ -23,7 +22,6 @@ A 3d gallery or slideshow, targetting mobile primarily.
 		<img src="http://dummyimage.com/500x300/444/99F" />
 	</div>
 </div>
-<!-- end: 3d galleryna -->
 ````
 
 ```javascript
