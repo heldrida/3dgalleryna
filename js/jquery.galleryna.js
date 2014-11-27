@@ -175,6 +175,9 @@
 			this.$items.not(this.$leftItem).removeClass('left');
 			this.$items.not(this.$rightItem).removeClass('right');
 
+			// set active element
+			this._activeDot();
+
 			// when slide finish positioning, execute callback if set
 			setTimeout(function () {
 				_self.callbacks['onSlideChange']();
@@ -305,6 +308,14 @@
 
             }
 
+		},
+
+		_activeDot: function () {
+			// work in progress, the gallery-dots will be generated dynamically
+			var index = this.$current.index();
+
+			$('.galleryna-dots li').removeClass('active');
+			$('.galleryna-dots li:eq(' + index + ')').addClass('active');
 		}
 
 	}
