@@ -17,7 +17,7 @@
 
 		this.defaults = {
 			current: 0,
-			interval: 1, // seconds
+			interval: 2, // seconds
 			autoplay: true
 		};
 
@@ -192,8 +192,6 @@
 		},
 
 		_slide: function () {
-			
-			return;
 
             var _self = this,
             	milliseconds = this.options.interval * 1000;
