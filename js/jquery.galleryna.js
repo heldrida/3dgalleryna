@@ -40,7 +40,8 @@
 			this.$items = this.$wrapper.children('div');
 			this.itemsTotal = this.$items.length;
 			this.current = this.options.current;
-			
+			this.$navigationBtns = this.$el.siblings('.navigation');
+
 			this._setItems();
 
 			// on windows resize, modify the width
@@ -184,10 +185,54 @@
 			return result;
 		},
 
+		_setTransitionDuration: function () {
+
+			var data = this.$items.eq(0).css('transition-duration').split(','),
+				max = 0,
+				current = 0;
+
+			$.each(data, function (k, v ) {
+				current = parseFloat(v) * 1000;
+				max =  max < current ? current : max; 
+			});
+
+			return max;
+		},
+
 		_setListeners: function (listener) {
+
+			var _self = this;
+
+			// clear autoplay
+			this.$window.on('next.galleryna previous.galleryna', function () {
+				_self.options.autoplay = false;
+				clearTimeout(_self.slideshow);
+			});
 
 			this.$window.on('next.galleryna', this._next.bind(this));
 			this.$window.on('previous.galleryna', this._previous.bind(this));
+
+			// set navigation listeners to handle next and previous
+			var navigationLock = false,
+				transitionDuration = _self._setTransitionDuration();
+
+			this.$navigationBtns.on('click', function(){
+
+				if (!navigationLock) {
+
+					navigationLock = true;
+
+					_self.$window.trigger( $(this).data('navigation') + '.galleryna');
+
+					setTimeout(function () {
+
+						navigationLock = false;
+
+					}, transitionDuration);
+
+				}
+
+			});
 
 		},
 

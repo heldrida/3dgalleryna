@@ -6,8 +6,10 @@ $(function () {
 
 	$('.temp-helper-listener').on('click', function(){
 
-		$(window).trigger('next.galleryna');
+		var navigation = $(this).data('navigation');
 
-	}.bind(this));
+		$(window).trigger( navigation + '.galleryna');
+
+	});
 
 });
