@@ -51,6 +51,8 @@
 			// start window resize listener
 			this._windowResizeEventManager.listen();
 
+			this._setListeners();
+
 			// start slideshow
 			this._slide();
 
@@ -115,12 +117,23 @@
 			}.bind(this), 400);
 		},
 
-		_setItems: function () {
+		_setItems: function (navigation) {
 
 			// set item positions
-			this.$current = this.$items.eq(this.current === this.itemsTotal ? 0 : this.current);
-			this.$leftItem = this.$items.eq(this._prevPosition.call(this));
-			this.$rightItem = this.$items.eq(this._nextPosition.call(this));
+
+			if (navigation === "previous") {
+
+				this.$current = this.$items.eq(this.current === this.itemsTotal ? 0 : this.current);
+				this.$leftItem = this.$items.eq(this._prevPosition.apply(this, ['previous']));
+				this.$rightItem = this.$items.eq(this._nextPosition.apply(this, ['previous']));
+
+			} else {
+
+				this.$current = this.$items.eq(this.current === this.itemsTotal ? 0 : this.current);
+				this.$leftItem = this.$items.eq(this._prevPosition.apply(this, ['next']));
+				this.$rightItem = this.$items.eq(this._nextPosition.apply(this, ['next']));
+
+			}
 
 			// set active
 			this.$items.removeClass('active');
@@ -136,41 +149,45 @@
 			this.$items.not(this.$leftItem).removeClass('left');
 			this.$items.not(this.$rightItem).removeClass('right');
 
-			this._setListener('next');
-			this._setListener('previous');
-
 		},
 
-		_prevPosition: function () {
+		_prevPosition: function (navigation) {
 
-			if (this.current >= this.itemsTotal) {
-				this.current = 0;
+			if (this.current < 0) {
+
+				if (Math.abs(this.current) >= this.itemsTotal) {
+					this.current = 0;
+				}
+
+			} else {
+
+				if (this.current >= this.itemsTotal) {
+					this.current = 0;
+				}					
+
 			}
 
-			return this.current === 0 ? this.itemsTotal - 1 : this.current - 1;
+			result = this.current === 0 ? this.itemsTotal - 1 : this.current - 1;
+
+			return result;
 
 		},
 
-		_nextPosition: function () {
+		_nextPosition: function (navigation) {
 
 			if (this.current === this.itemsTotal) {
 				this.current = 0;
 			}
 
-			return this.current === this.itemsTotal - 1 ? 0 : this.current + 1;
+			result = this.current === this.itemsTotal - 1 ? 0 : this.current + 1;	
+
+			return result;
 		},
 
-		_setListener: function (listener) {
+		_setListeners: function (listener) {
 
-			if (listener === "next") {
-
-				this.$window.on('next.galleryna', this._next.bind(this));
-
-			} else if (listener === "previous") {
-
-				this.$window.on('previous.galleryna', this._previous.bind(this));
-
-			}
+			this.$window.on('next.galleryna', this._next.bind(this));
+			this.$window.on('previous.galleryna', this._previous.bind(this));
 
 		},
 
@@ -186,8 +203,11 @@
 
 		_previous: function () {
 
-			console.log('_previous()');
-			
+			this.current -= 1;
+
+			// update items
+			this._setItems('previous');
+
 		},
 
 		_slide: function () {
@@ -195,17 +215,21 @@
             var _self = this,
             	milliseconds = this.options.interval * 1000;
 
-            this.slideshow = setTimeout(function() {
+            if (this.options.autoplay) {
+            	
+	            this.slideshow = setTimeout(function() {
 
-            	_self._next();
+	            	_self._next();
 
-                if (_self.options.autoplay) {
+	                if (_self.options.autoplay) {
 
-                    _self._slide();
+	                    _self._slide();
 
-                }
+	                }
 
-            }, milliseconds);
+	            }, milliseconds);
+
+            }
 
 		}
 
