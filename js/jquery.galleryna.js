@@ -2,8 +2,8 @@
  * jquery.galleryna.js
  *
  * Author: Helder C.
- * Url: www.punkbit.com
- * Free to use under the MIT license
+ * Url: http://www.punkbit.com
+ * Licensed under The MIT License.
  *
  */
 (function ($, undefined) {
@@ -17,7 +17,7 @@
 
 		this.defaults = {
 			current: 0,
-			interval: 2, // seconds
+			interval: 2	, // seconds
 			autoplay: true
 		};
 
@@ -40,6 +40,8 @@
 			this.$items = this.$wrapper.children('div');
 			this.itemsTotal = this.$items.length;
 			this.current = this.options.current;
+			
+			this._setItems();
 
 			// on windows resize, modify the width
 			this._windowResizeEventManager.queue.push(function () {
@@ -48,8 +50,6 @@
 
 			// start window resize listener
 			this._windowResizeEventManager.listen();
-
-			this._setItems();
 
 			// start slideshow
 			this._slide();
@@ -108,6 +108,11 @@
 					});
 
 				});
+
+			// set wrapper height
+			setTimeout(function() {
+				this.$wrapper.css({ height: this.$items.eq(0).outerHeight() });
+			}.bind(this), 400);
 		},
 
 		_setItems: function () {
@@ -116,7 +121,6 @@
 			this.$current = this.$items.eq(this.current === this.itemsTotal ? 0 : this.current);
 			this.$leftItem = this.$items.eq(this._prevPosition.call(this));
 			this.$rightItem = this.$items.eq(this._nextPosition.call(this));
-			console.log(this.$rightItem);
 
 			// set active
 			this.$items.removeClass('active');
@@ -153,9 +157,6 @@
 				this.current = 0;
 			}
 
-			console.log('this.current: ' + this.current);
-			console.log(this.current === this.itemsTotal - 1 ? 0 : this.current + 1);
-
 			return this.current === this.itemsTotal - 1 ? 0 : this.current + 1;
 		},
 
@@ -174,8 +175,6 @@
 		},
 
 		_next: function () {
-
-			console.log('_next()');
 
 			this.current += 1;
 
