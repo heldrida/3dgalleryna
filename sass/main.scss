@@ -59,10 +59,16 @@
 	list-style: none;
 	display: block;
 	text-align: center;
+	margin: 0;
 	padding: 0;
 	width: 100%;
 	pointer-events: none;
-	margin-top: 10px;
+	margin-top: 25px;
+
+	ul {
+		margin: 0;
+		padding: 0;		
+	}
 
 	li {
 		position: relative;
