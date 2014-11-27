@@ -33,6 +33,8 @@
 
 			this.$window = $(window);
 			this.options = $.extend(true, {}, this.defaults, options);
+
+			this._setCallbacks();
 			
 			this._wrapItems();
 
@@ -42,7 +44,7 @@
 			this.current = this.options.current;
 			this.$navigationBtns = this.$el.siblings('.navigation');
 
-			this._setItems();
+			this.transitionDuration = this._setTransitionDuration();
 
 			// on windows resize, modify the width
 			this._windowResizeEventManager.queue.push(function () {
@@ -54,8 +56,22 @@
 
 			this._setListeners();
 
+			// initial positioning
+			this._switchItems();
+
 			// start slideshow
 			this._slide();
+
+		},
+
+		_setCallbacks: function () {
+
+			this.callbacks = {};
+
+			// set callbacks
+			if (typeof this.options.onSlideChange === "function") {
+				this.callbacks['onSlideChange'] = this.options.onSlideChange;
+			}
 
 		},
 
@@ -114,14 +130,14 @@
 
 			// set wrapper height
 			setTimeout(function() {
-				this.$wrapper.css({ height: this.$items.eq(0).outerHeight() });
+				var h =this.$items.eq(0).outerHeight();
+				this.$wrapper.css({ height: h });
 			}.bind(this), 400);
 		},
 
 		_setItems: function (navigation) {
 
 			// set item positions
-
 			if (navigation === "previous") {
 
 				this.$current = this.$items.eq(this.current === this.itemsTotal ? 0 : this.current);
@@ -136,6 +152,15 @@
 
 			}
 
+		},
+
+		_switchItems: function (navigation) {
+
+			var _self = this;
+
+			// get positioned items
+			this._setItems(navigation);
+
 			// set active
 			this.$items.removeClass('active');
 			this.$current.addClass('active');
@@ -149,6 +174,11 @@
 			// remove left & right from inactive
 			this.$items.not(this.$leftItem).removeClass('left');
 			this.$items.not(this.$rightItem).removeClass('right');
+
+			// when slide finish positioning, execute callback if set
+			setTimeout(function () {
+				_self.callbacks['onSlideChange']();
+			}, _self.transitionDuration);
 
 		},
 
@@ -213,8 +243,7 @@
 			this.$window.on('previous.galleryna', this._previous.bind(this));
 
 			// set navigation listeners to handle next and previous
-			var navigationLock = false,
-				transitionDuration = _self._setTransitionDuration();
+			var navigationLock = false;
 
 			this.$navigationBtns.on('click', function(){
 
@@ -228,7 +257,7 @@
 
 						navigationLock = false;
 
-					}, transitionDuration);
+					}, _self.transitionDuration);
 
 				}
 
@@ -241,7 +270,7 @@
 			this.current += 1;
 
 			// update items
-			this._setItems();
+			this._switchItems();
 
 
 		},
@@ -251,7 +280,7 @@
 			this.current -= 1;
 
 			// update items
-			this._setItems('previous');
+			this._switchItems('previous');
 
 		},
 
