@@ -266,6 +266,73 @@
 
 			});
 
+			this._touchListener();
+
+		},
+
+		_touchListener: function () {
+			
+			/*  Move Left or Right the following elements
+			    Calculate direction and trigger next/previous accordingly
+
+				this.$current;
+				this.$leftItem;
+				this.$rightItem;
+			*/
+
+			var _self = this,
+				touchStart = null,
+				touchEnd = null,
+				touchPositions = function ($element, event) {
+
+					var touch = event.originalEvent.touches[0],
+						elementOffset = $element.offset(),
+						x = touch.pageX - elementOffset.left,
+						y = touch.pageY - elementOffset.top;
+
+					return { posX: x, posY: y };
+
+				},
+				percentage = function (width, position) {
+
+					var r = 100 / width,
+						x = r * position;
+
+					return x;
+
+				};
+
+			this.$el.off('touchstart.galleryna').on('touchstart.galleryna', function (e) {
+
+					clearInterval(_self.slideshow);
+
+					touchStart = touchPositions($(this), e).posX;
+
+			});
+
+			this.$el.off('touchend.galleryna').on('touchend.galleryna', function (e) {
+
+					_self.$current.css({
+						transition: '',
+						transform: ''
+					});
+
+			});
+
+			this.$el.off('touchmove.galleryna').on('touchmove.galleryna', function (e) {
+
+					touchEnd = touchPositions($(this), e).posX;
+
+					var translateX = percentage(_self.$el.outerWidth(), touchEnd),
+						offset = percentage(_self.$el.outerWidth(), e.originalEvent.touches[0].pageX) - translateX;
+
+					_self.$current.css({
+						transition: 'none',
+						transform: 'translateX(' + (translateX - offset) + '%)'
+					});
+
+			});
+
 		},
 
 		_next: function () {
