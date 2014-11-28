@@ -42,7 +42,7 @@
 			this.$items = this.$wrapper.children('div');
 			this.itemsTotal = this.$items.length;
 			this.current = this.options.current;
-			this.$navigationBtns = this.$el.siblings('.navigation');
+			this.$navigationBtns = this.$el.siblings('.btnWrapper').children('.navigation');
 
 			this.transitionDuration = this._setTransitionDuration();
 
