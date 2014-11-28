@@ -3,9 +3,13 @@
 	<head>
 		<title>3d Galleryna</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 	</head>
 	<body>
+
+		<h1>Galleryna</h1>
 
 		<!-- start: 3d galleryna -->
 		<div id="myGallery" class="galleryna">
@@ -49,8 +53,10 @@
 		</div>
 		<!-- end: work in progress, the gallery-dots will be generated dynamically -->
 
-		<button class="navigation nav-listener" data-navigation="previous">&lt; previous</button>
-		<button class="navigation nav-listener" data-navigation="next">next &gt;</button>
+		<div class="btnWrapper">
+			<button class="pure-button navigation nav-listener" data-navigation="previous">&lt; previous</button>
+			<button class="pure-button navigation nav-listener" data-navigation="next">next &gt;</button>
+		</div>
 
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script type="text/javascript" src="js/jquery.galleryna.js"></script>

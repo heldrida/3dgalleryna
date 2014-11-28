@@ -1,3 +1,10 @@
+h1 {
+	text-align: center;
+	padding: 15px 0 50px;
+	color: #aaa;
+	font-family: 'Open Sans Condensed', sans-serif;
+}
+
 .galleryna {
 	width: 80%;
 	height: auto;
@@ -119,5 +126,17 @@
 			}
 		}
 
+	}
+}
+
+.btnWrapper {
+	text-align: center;
+	padding: 50px 0;
+
+	.pure-button {
+		font-size: 1.25em;
+		color: #fff;
+		background-color: #aaa;
+		font-family: 'Open Sans Condensed', sans-serif;
 	}
 }
