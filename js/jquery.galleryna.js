@@ -340,7 +340,7 @@
 					'-webkit-transform': ''
 				});
 
-				if (Math.abs(touchStart - touchEnd) >= 200) {
+				if (Math.abs(touchStart - touchEnd) >= 100) {
 
 					if (touchStart < touchEnd) {
 
