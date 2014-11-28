@@ -321,17 +321,23 @@
 
 				_self.$current.css({
 					transition: '',
-					transform: ''
+					transform: '',
+					'-webkit-transition': '',
+					'-webkit-transform': ''
 				});
 
 				_self.$leftItem.css({
 					transition: '',
-					transform: ''
+					transform: '',
+					'-webkit-transition': '',
+					'-webkit-transform': ''
 				});
 
 				_self.$rightItem.css({
 					transition: '',
-					transform: ''
+					transform: '',
+					'-webkit-transition': '',
+					'-webkit-transform': ''
 				});
 
 				if (Math.abs(touchStart - touchEnd) >= 200) {
@@ -359,17 +365,23 @@
 
 					_self.$current.css({
 						transition: 'none',
-						transform: 'translateX(' + (translateX  ) + '%)'
+						transform: 'translateX(' + (translateX  ) + '%)',
+						'-webkit-transition': 'none',
+						'-webkit-transform': 'translateX(' + (translateX  ) + '%)'
 					});
 
 					_self.$leftItem.css({
 						transition: 'none',
-						transform: 'translateX(' + (translateX - 50 ) + '%) scale(' + getScale(translateX) + ')'
+						transform: 'translateX(' + (translateX - 50 ) + '%) scale(' + getScale(translateX) + ')',
+						'-webkit-transition': 'none',
+						'-webkit-transform': 'translateX(' + (translateX - 50 ) + '%) scale(' + getScale(translateX) + ')'
 					});
 
 					_self.$rightItem.css({
 						transition: 'none',
-						transform: 'translateX(' + (translateX + 50 ) + '%) scale(' + getScale(translateX) + ')'
+						transform: 'translateX(' + (translateX + 50 ) + '%) scale(' + getScale(translateX) + ')',
+						'-webkit-transition': 'none',
+						'-webkit-transform': 'translateX(' + (translateX + 50 ) + '%) scale(' + getScale(translateX) + ')'
 					});
 
 			});
