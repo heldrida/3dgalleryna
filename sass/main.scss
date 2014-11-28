@@ -40,13 +40,13 @@
 		}
 
 		&.left {
-			transform: translateX(-50%) scale(0.75) rotateY(5deg);
+			transform: translateX(-50%) scale(0.75);
 			filter: blur(5px);
 			-webkit-filter: blur(5px);
 		}
 
 		&.right {
-			transform: translateX(50%) scale(0.75) rotateY(45deg);
+			transform: translateX(50%) scale(0.75);
 			filter: blur(5px);
 			-webkit-filter: blur(5px);
 		}

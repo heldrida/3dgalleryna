@@ -271,14 +271,6 @@
 		},
 
 		_touchListener: function () {
-			
-			/*  Move Left or Right the following elements
-			    Calculate direction and trigger next/previous accordingly
-
-				this.$current;
-				this.$leftItem;
-				this.$rightItem;
-			*/
 
 			var _self = this,
 				touchStart = null,
@@ -300,6 +292,18 @@
 
 					return x;
 
+				},
+				getScale = function (translateX) {
+					var v = 0,
+						offset = 50;
+
+					if (translateX / offset > 1) {
+						v = 1;
+					} else {
+						v = translateX / offset;
+					}
+
+					return Math.abs(v);
 				};
 
 			this.$el.off('touchstart.galleryna').on('touchstart.galleryna', function (e) {
@@ -308,14 +312,41 @@
 
 					touchStart = touchPositions($(this), e).posX;
 
+					// set $leftItem translateX offset
+					_self.$leftItem.css();
+
 			});
 
 			this.$el.off('touchend.galleryna').on('touchend.galleryna', function (e) {
 
-					_self.$current.css({
-						transition: '',
-						transform: ''
-					});
+				_self.$current.css({
+					transition: '',
+					transform: ''
+				});
+
+				_self.$leftItem.css({
+					transition: '',
+					transform: ''
+				});
+
+				_self.$rightItem.css({
+					transition: '',
+					transform: ''
+				});
+
+				if (Math.abs(touchStart - touchEnd) >= 200) {
+
+					if (touchStart < touchEnd) {
+
+						_self.$window.trigger('previous.galleryna');
+
+					} else {
+
+						_self.$window.trigger('next.galleryna');
+
+					}
+
+				}
 
 			});
 
@@ -323,12 +354,22 @@
 
 					touchEnd = touchPositions($(this), e).posX;
 
-					var translateX = percentage(_self.$el.outerWidth(), touchEnd),
-						offset = percentage(_self.$el.outerWidth(), e.originalEvent.touches[0].pageX) - translateX;
+					var offset = e.originalEvent.touches[0].pageX - touchStart, // we subtract the current touch position
+						translateX = percentage(_self.$el.outerWidth(), offset);
 
 					_self.$current.css({
 						transition: 'none',
-						transform: 'translateX(' + (translateX - offset) + '%)'
+						transform: 'translateX(' + (translateX  ) + '%)'
+					});
+
+					_self.$leftItem.css({
+						transition: 'none',
+						transform: 'translateX(' + (translateX - 50 ) + '%) scale(' + getScale(translateX) + ')'
+					});
+
+					_self.$rightItem.css({
+						transition: 'none',
+						transform: 'translateX(' + (translateX + 50 ) + '%) scale(' + getScale(translateX) + ')'
 					});
 
 			});
