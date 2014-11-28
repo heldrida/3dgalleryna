@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>3d Galleryna</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+	</head>
+	<body>
+
+		<h1>Galleryna</h1>
+
+		<!-- start: 3d galleryna -->
+		<div id="myGallery" class="galleryna">
+			<div data-index="0">
+				<img src="http://dummyimage.com/500x300/444/fc0" />
+			</div>
+			<div data-index="1">
+				<img src="http://dummyimage.com/500x300/444/0cf" />
+			</div>
+			<div data-index="2">
+				<img src="http://dummyimage.com/500x300/444/1fb" />
+			</div>
+			<div data-index="3">
+				<img src="http://dummyimage.com/500x300/444/aA9" />
+			</div>
+			<div data-index="4">
+				<img src="http://dummyimage.com/500x300/444/99F" />
+			</div>
+		</div>
+		<!-- end: 3d galleryna -->
+
+		<!-- start: work in progress, the gallery-dots will be generated dynamically -->
+		<div class="galleryna-dots">
+			<ul>
+				<li data-index="0">
+					<button type="button" data-role="none">0</button>
+				</li>
+				<li data-index="1">
+					<button type="button" data-role="none">1</button>
+				</li>
+				<li data-index="2">
+					<button type="button" data-role="none">2</button>
+				</li>
+				<li data-index="3">
+					<button type="button" data-role="none">3</button>
+				</li>
+				<li data-index="4">
+					<button type="button" data-role="none">4</button>
+				</li>
+			</ul>
+		</div>
+		<!-- end: work in progress, the gallery-dots will be generated dynamically -->
+
+		<div class="btnWrapper">
+			<button class="pure-button navigation nav-listener" data-navigation="previous">&lt; previous</button>
+			<button class="pure-button navigation nav-listener" data-navigation="next">next &gt;</button>
+		</div>
+
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.galleryna.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
+
+	</body>
+</html>
